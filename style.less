@@ -1,0 +1,83 @@
+@green:			#5C4383;
+
+@navbar-bg:		white;
+
+@head-bg:		@green;
+@head-txt:		white;
+@round-box-width:	175px;
+@round-box-border:	1px solid lighten(@green, 20%);
+@rounded-box-border-radius:		15%;
+@rounded-box-font-size:		108px;
+
+nav.navbar {
+	margin-bottom: 0;
+	background-color: @navbar-bg;
+	border: none;
+
+	.navbar-brand {
+		color: @green;
+	}
+}
+
+#topBlock {
+	background-color: @green;
+	color: @head-txt;
+	text-align: center;
+	border-radius: 0;
+	padding-left: 0;
+	padding-right: 0;
+
+	&.topBlock-inner {
+		text-align: left;
+	}
+
+	h2 {
+		font-size: 3em;
+	}
+
+	p {
+		color: lighten(@green, 40%);
+	}
+
+	.rounded-block {
+		width: @round-box-width;
+		text-align: center;
+		border: @round-box-border;
+		border-radius: @rounded-box-border-radius;
+		margin: 0 auto;
+		font-size: @rounded-box-font-size;
+	}
+}
+
+//Main content
+main {
+	display: block;
+
+	//Reusable classes
+	.sep-bottom {
+		border-bottom: 1px solid #E7E7E7;
+	}
+
+	//--- ACCORDION ---
+	#howmany {
+		margin: 30px 0;
+		padding-bottom: 20px;
+
+		input[type=number] {
+			margin: 0 5px;
+			width: 70px;
+		}
+	}
+
+	#accordion-content {
+		.accordion-group {
+			margin: 30px 0;
+		}
+	}
+}
+
+
+/* Bootstrap Overwites */
+.container-fluid {
+	padding: 0;
+}
