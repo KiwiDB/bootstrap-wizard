@@ -1,13 +1,246 @@
 function Accordion() {
-	this.updateSet = function() {
-		var num = $("#howmany-accordions").val();
+	this.updateSet = function() {		
+		$("#accordion-content").slideUp("fast", function() {
+			var num = $("#howmany-accordions").val();
 
-		var source   = $("#accordion-form-template").html();
+			//If we've already created accordions, we need to save the current values before destroying
+			if($("#accordion-content input").length > 0)
+			{
+				var oldVals = {};
+
+				$("#accordion-content input[type=text],#accordion-content textarea,#accordion-content select").each(function() {
+					oldVals[$(this).attr("id")] = $(this).val();
+				});
+
+				$("#accordion-content input[type=checkbox]").each(function() {
+					oldVals[$(this).attr("id")] = $(this).prop("checked");
+				});
+
+				//If LIs are populated, save them separately
+				oldVals["_list"] = {};
+				$(".acc-body-li").each(function() {
+					var li = $(this).find("li");
+
+					if(li.length > 0)
+					{
+						var lis = [];
+
+						li.each(function() {
+							lis.push($(this).find("input[type=text]").val());
+						});
+
+						oldVals["_list"][$(this).attr("id")] = lis;
+					}
+				});
+
+				console.log(oldVals);
+			}
+
+			var source   = $("#accordion-form-template").html();
+			var template = Handlebars.compile(source);
+			var context = {repeat: num};
+			var html    = template(context);
+
+			$("#accordion-content").html(html);
+
+			//var ind = 0;
+			$(".acc-body-li").each(function() {
+				//Add the first list item to each accordion (temp)
+				var source   = $("#accordion-form-li").html();
+				var template = Handlebars.compile(source);
+				var context = {};
+				var html    = template(context);
+
+				$(this).html(html);
+			});
+
+			//If we stored old values, repopulate
+			if(oldVals)
+			{
+				for(i in oldVals)
+				{
+					if($("#" + i).attr("type") == "checkbox")
+						$("#" + i).prop("checked", oldVals[i]);
+					else
+						$("#" + i).val(oldVals[i]);
+				}
+
+				$(".acc-type").each(function() {
+					accordion.changeType($(this).get(0), true);
+				});
+
+				$(".acc-hasFooter").each(function() {
+					accordion.footer($(this).get(0), true);
+				});
+
+				//Special handling of LIs
+				if(oldVals["_list"])
+				{
+					for(listitem in oldVals["_list"])
+					{
+						if(oldVals["_list"][listitem].length > 1)
+						{
+							accordion.addLi($("#" + listitem).find("li:first-child .btn-add").get(0), oldVals["_list"][listitem].length-1);
+						}
+
+						$("#" + listitem).find("li").each(function(index) {
+							$(this).find("input[type=text]").val(oldVals["_list"][listitem][index]);
+						});
+					}
+				}
+
+
+/*
+				$(".btn-add").each(function() {
+					accordion.addLi($(this).get(0), 3);
+				})
+*/
+			}
+
+			//If we've already generated code, need to update the value of the button
+			if($("#accordion-code-container").hasClass("code-populated"))
+				$("#generateAccordionBtn").val("Update Accordion Code");
+
+			$("#accordion-content").slideDown("fast", function() { $.scrollTo("#accordion-content", 200); });
+		});
+	}
+
+	this.changeType = function(t, dontAnimate) {
+		var o = $(t);
+		var container = o.closest(".form-group");
+
+		if(o.val() == "text") {
+			if(dontAnimate) {
+				container.find(".acc-body-li").css("display", "none");
+				container.find(".acc-body-txt").css("display", "");
+			}
+			else {
+				container.find(".acc-body-li").fadeOut("fast", function() {
+					container.find(".acc-body-txt").fadeIn("fast");
+				});
+			}
+		}
+		else
+		{
+			if(dontAnimate) {
+				container.find(".acc-body-li").css("display", "");
+				container.find(".acc-body-txt").css("display", "none");
+			}
+			else {
+				container.find(".acc-body-txt").fadeOut("fast", function() {
+					container.find(".acc-body-li").fadeIn("fast");
+				});
+			}
+		}
+	}
+
+	this.addLi = function(t, num) {
+		if(!num)	num = 1;
+
+		var o = $(t);
+		var li = o.closest("li");
+		var ul = li.closest("ul");
+
+		var source   = $("#accordion-form-li").html();
 		var template = Handlebars.compile(source);
-		var context = {repeat: num};
+		var context = {};
 		var html    = template(context);
 
-		$("#accordion-content").html(html);
+		for(i=0; i<num; i++)
+			li.after(html);
+
+		ul.find(".btn-remove").removeClass("hidden");
+	}
+
+	this.removeLi = function(t) {
+		var o = $(t);
+		var li = o.closest("li");
+		var ul = li.closest("ul");
+		li.remove();
+
+		if(ul.find("li").length == 1)
+			ul.find(".btn-remove").addClass("hidden");
+	}
+
+	this.footer = function(t, dontAnimate) {
+		var o = $(t);
+		var f = o.closest(".accordion-group").find(".acc-footer-container");
+
+		if(dontAnimate)
+		{
+			if(o.prop("checked"))
+				f.css("display", "");
+			else
+				f.css("display", "none");
+		}
+		else
+		{
+			if(o.prop("checked"))
+				f.slideDown("fast");
+			else
+				f.slideUp("fast");
+		}
+	}
+
+	this.generate = function() {
+		$("#output").slideUp("fast", function() {
+			var data = {fields: [], config: {}};
+
+			$(".accordion-group").each(function() {
+				var t = {};
+				t.title = $(this).find("[name=title]").val();
+				t.open = $(this).find("[name=open]").prop("checked");
+				t.type = $(this).find("[name=type]").val() == "text";
+
+				if(t.type)
+					t.body = $(this).find("[name=body]").val();
+				else
+				{
+					var list = [];
+
+					$(this).find("li").each(function() {
+						list.push($(this).find("input[type=text]").val());
+					})
+
+					t.list = list;
+				}
+
+				t.hasFooter = $(this).find("[name=hasFooter]").prop("checked");
+				t.footer = $(this).find("[name=footer]").val();
+
+				t.index = data.fields.length+1;
+
+				console.log(t);
+
+				data.fields.push(t);
+			});
+
+			data.config = {
+				addP: $("#addP").prop("checked")
+			}
+
+			//Grab the generated HTML
+			var source   = $("#accordion-html").html();
+			var template = Handlebars.compile(source);
+			var context = {data: data};
+			var html    = template(context);
+
+			//Transform the HTML for the syntax highlighter
+			var source   = $("#accordion-syntax-highlighter").html();
+			var template = Handlebars.compile(source);
+			var context = {data: html};
+			var html_s    = template(context);
+
+			$("#accordion-code-container").html(html_s);
+			$("#accordion-code-container").addClass("code-populated");
+			SyntaxHighlighter.highlight();
+
+			$("#preview").html(html);
+
+			$("#generateAccordionBtn").val("Update Accordion Code");
+
+			$("#output").slideDown("fast", function() { $.scrollTo("#output", 200); });
+		});
 	}
 }
 
@@ -28,6 +261,7 @@ function handlebarsInit() {
 
 $(function() {
 	handlebarsInit();
+	//SyntaxHighlighter.all()
 });
 
 var accordion = new Accordion();

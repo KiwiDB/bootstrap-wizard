@@ -29,17 +29,25 @@
 		<form action='accordion.php' method='post' onsubmit='accordion.updateSet(); return false;' id='howmany' class='form-inline sep-bottom'>
 			<div class='form-group'>
 				<label for="howmany-accordions">How many accordion items do you need?</label>
-    			<input type="number" class="form-control" id="howmany-accordions" placeholder="3" min="1" max="99" step="1" maxlength="2">
+    			<input type="number" class="form-control" id="howmany-accordions" min="1" max="99" step="1" maxlength="2">
 			</div>
 
-			<input type='submit' class='btn btn-default' value='Update -->' />
+			<input type='submit' class='btn btn-default' value='Update' />
 		</form>
 		<!-- /"How Many" form -->
 
 		<!-- Content form -->
-		<form action='accordion.php' method='post' onsubmit='return false;' id='accordion-content' class='form-horizontal'>
+		<form action='accordion.php' method='post' onsubmit='accordion.generate(); return false;' id='accordion-content' class='form-horizontal'>
 		</form>
 		<!-- /Content form -->
+
+		<div id="output" class="sep-top" style="display:none">
+			<!-- Code Output -->
+			<div id="accordion-code-container" class="brush: js"></div>
+
+			<!-- Preview -->
+			<div id="preview"></div>
+		</div>
 
 	<?php end_bsRows(); ?>
 
