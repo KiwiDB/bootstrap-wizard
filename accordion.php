@@ -1,7 +1,7 @@
 <?php
 	$config = array(
 		"activeIndex" => 1,
-		"bodyClass" => "accordion"
+		"bodyClass" => "accordion-wiz"
 	);
 
 	include("template/head.php");
@@ -43,7 +43,7 @@
 
 		<div id="output" class="sep-top" style="display:none">
 			<!-- Code Output -->
-			<div id="accordion-code-container" class="brush: js"></div>
+			<div id="code-container" class="brush: js"></div>
 
 			<!-- Preview -->
 			<div id="preview"></div>

@@ -49,15 +49,28 @@
 		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
 		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
 		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
-		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script>
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js" type="text/javascript"></script>
 
 
 		<script src="scripts.js"></script>
 
+		<?php 	if(isset($config["onLoad"])) : ?>
+			<script type='text/javascript'>
+				$(function() {
+					<?php echo($config["onLoad"]); ?>
+				});
+			</script>
+		<?php endif; ?>
+
 
 
 <!-- Templates -->
-		<?php /* ACCORDION*/ if($config["bodyClass"] == "accordion") : ?>
+		<?php /****
+			   ****
+			   **** ACCORDION
+			   ****
+			   ****
+			   ****/ if($config["bodyClass"] == "accordion-wiz") : ?>
 
 	<!-- Accordion Form -->
 <script id="accordion-form-template" type="text/x-handlebars-template">
@@ -154,14 +167,50 @@
 	{{/data.fields}}
 </div>
 </script>
+		<?php endif; ?>
 
-	<!-- Additions required for the syntax hightlighter -->
-<script id="accordion-syntax-highlighter" type="text/x-handlebars-template">
-<script type="syntaxhighlighter" class="brush: js"><![CDATA[
+		<?php /****
+			   ****
+			   **** MODAL
+			   ****
+			   ****
+			   ****/ if($config["bodyClass"] == "modal-wiz") : ?>
+
+<!-- Modal Form -->
+<script id="modal-code" type="text/x-handlebars-template">
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  {{data.btn.text}}
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{data.modal.title}}</h4>
+      </div>
+      <div class="modal-body">
+        {{{data.modal.body}}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</script>
+
+			   <?php endif; ?>
+
+<!-- Additions required for the syntax hightlighter -->
+<script id="syntax-highlighter" type="text/x-handlebars-template">
+<script type="syntaxhighlighter" class="brush: xml"><![CDATA[
 {{data}}
 ]]></script>
 </script>
-		<?php endif; ?>
 <!-- /Templates -->
 
 
@@ -188,7 +237,8 @@
 				    <!-- Collect the nav links, forms, and other content for toggling -->
 				    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				      <ul class="nav navbar-nav">
-				        <li class="<?php echo($config["activeIndex"] == 1 ? "active" : ""); ?>"><a href="accordion.php">Collapse (Accordion) Generator <span class="sr-only">(current)</span></a></li>
+				        <li class="<?php echo($config["activeIndex"] == 1 ? "active" : ""); ?>"><a href="accordion.php">Collapse (Accordion) Generator<?php if($config["activeIndex"] == 1) : ?> <span class="sr-only">(current)</span><?php endif; ?></a></li>
+				        <li class="<?php echo($config["activeIndex"] == 2 ? "active" : ""); ?>"><a href="modal.php">Modal Generator<?php if($config["activeIndex"] == 1) : ?> <span class="sr-only">(current)</span><?php endif; ?></a></li>
 				      </ul>
 				    </div><!-- /.navbar-collapse -->
 				  </div><!-- /.container-fluid -->

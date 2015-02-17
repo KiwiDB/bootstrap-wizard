@@ -183,67 +183,109 @@ function Accordion() {
 	}
 
 	this.generate = function() {
-		$("#output").slideUp("fast", function() {
-			var data = {fields: [], config: {}};
+		var data = {fields: [], config: {}};
 
-			$(".accordion-group").each(function() {
-				var t = {};
-				t.title = $(this).find("[name=title]").val();
-				t.open = $(this).find("[name=open]").prop("checked");
-				t.type = $(this).find("[name=type]").val() == "text";
+		$(".accordion-group").each(function() {
+			var t = {};
+			t.title = $(this).find("[name=title]").val();
+			t.open = $(this).find("[name=open]").prop("checked");
+			t.type = $(this).find("[name=type]").val() == "text";
 
-				if(t.type)
-					t.body = $(this).find("[name=body]").val();
-				else
-				{
-					var list = [];
+			if(t.type)
+				t.body = $(this).find("[name=body]").val();
+			else
+			{
+				var list = [];
 
-					$(this).find("li").each(function() {
-						list.push($(this).find("input[type=text]").val());
-					})
+				$(this).find("li").each(function() {
+					list.push($(this).find("input[type=text]").val());
+				})
 
-					t.list = list;
-				}
-
-				t.hasFooter = $(this).find("[name=hasFooter]").prop("checked");
-				t.footer = $(this).find("[name=footer]").val();
-
-				t.index = data.fields.length+1;
-
-				console.log(t);
-
-				data.fields.push(t);
-			});
-
-			data.config = {
-				addP: $("#addP").prop("checked")
+				t.list = list;
 			}
 
-			//Grab the generated HTML
-			var source   = $("#accordion-html").html();
-			var template = Handlebars.compile(source);
-			var context = {data: data};
-			var html    = template(context);
+			t.hasFooter = $(this).find("[name=hasFooter]").prop("checked");
+			t.footer = $(this).find("[name=footer]").val();
 
-			//Transform the HTML for the syntax highlighter
-			var source   = $("#accordion-syntax-highlighter").html();
-			var template = Handlebars.compile(source);
-			var context = {data: html};
-			var html_s    = template(context);
+			t.index = data.fields.length+1;
 
-			$("#accordion-code-container").html(html_s);
-			$("#accordion-code-container").addClass("code-populated");
-			SyntaxHighlighter.highlight();
+			console.log(t);
 
-			$("#preview").html(html);
+			data.fields.push(t);
+		});
 
-			$("#generateAccordionBtn").val("Update Accordion Code");
+		data.config = {
+			addP: $("#addP").prop("checked")
+		}
 
-			$("#output").slideDown("fast", function() { $.scrollTo("#output", 200); });
+		showOutput({
+			data: data,
+			template: $("#accordion-html"),
+			templateSyntax: $("#accordion-syntax-highlighter"),
+			beforeDisplay: function() { $("#generateAccordionBtn").val("Update Accordion Code"); }
 		});
 	}
 }
 
+function Modal() {
+	this.init = function() {
+	}
+
+	this.generate = function() {
+		var data = {};
+
+		$("#output").slideUp("fast", function() {
+			data.modal = {
+				title: $("#mod-title").val(),
+				body: $("#mod-body").val()
+			};
+
+			data.btn = {
+				text: $("#mod-btn-text").val()
+			}
+		});
+
+		showOutput({
+			data: data,
+			template: $("#modal-code"),
+			templateSyntax: $("#syntax-highlighter"),
+			beforeDisplay: function() { $("#generateModBtn").val("Update Modal Code"); }
+		});
+	}
+}
+
+
+/***
+**** GLOBAL
+***/
+function showOutput(d) {
+	$("#output").slideUp("fast", function() {
+		//Grab the generated HTML
+		var source   = d.template.html();
+		var template = Handlebars.compile(source);
+		var context = {data: d.data};
+		var html    = template(context);
+
+		//Transform the HTML for the syntax highlighter
+		var source   = d.templateSyntax.html();
+		var template = Handlebars.compile(source);
+		var context = {data: html};
+		var html_s    = template(context);
+
+		$("#code-container").html(html_s);
+		$("#code-container").addClass("code-populated");
+		SyntaxHighlighter.highlight();
+
+		$("#preview").html(html);
+
+		if(d.beforeDisplay)
+			d.beforeDisplay.call(this);
+
+		//$("#generateAccordionBtn").val("Update Accordion Code");
+
+		$("#output").slideDown("fast", function() { $.scrollTo("#output", 200); });
+	});
+}
 
 /***
 **** INIT
@@ -265,3 +307,4 @@ $(function() {
 });
 
 var accordion = new Accordion();
+var modal = new Modal();
