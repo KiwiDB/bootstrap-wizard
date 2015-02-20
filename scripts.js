@@ -231,14 +231,64 @@ function Modal() {
 	this.init = function() {
 	}
 
+	this.addBtn = function(t) {
+		var o = $(t);
+		var row = o.closest(".btn-row");
+
+		var numButtons = row.closest("ul").find("li").length;
+
+		var source   = $("#modal-form-btn").html();
+		var template = Handlebars.compile(source);
+		var context = {index: numButtons};
+		var html    = template(context);
+
+		if(row.hasClass("gl-add-btn"))
+			row.before(html);
+		else
+			row.after(html);
+	}
+
+	this.removeBtn = function(t) {
+		var o = $(t);
+		var li = o.closest("li");
+		var ul = li.closest("ul");
+		li.remove();
+
+		if(ul.find("li").length == 1)
+			ul.find(".btn-remove").addClass("hidden");
+	}
+
 	this.generate = function() {
 		var data = {};
 
 		$("#output").slideUp("fast", function() {
 			data.modal = {
 				title: $("#mod-title").val(),
-				body: $("#mod-body").val()
+				body: $("#mod-body").val(),
+				size: $("#mod-size").val(),
+				fade: $("#fade").prop("checked"),
+				btns: []
 			};
+
+			//Look for buttons to add to the modal
+			$(".btn-row").each(function() {
+				//Get past the "global" add row
+				if(!$(this).hasClass("gl-add-btn"))
+				{
+					var a = {};
+					/*
+					a.text = $(this).find("input[name=btn-text]").val();
+					a.class = $(this).find("input[name=btn-class]").val();
+					a.href = $(this).find("input[name=btn-href]").val();
+					a.click = $(this).find("input[name=btn-click]").val();
+					*/
+					$(this).find("input[type=text],select").each(function() { a[$(this).prop("name")] = $(this).val(); });
+					$(this).find("input[type=checkbox]").each(function() { a[$(this).prop("name")] = $(this).prop("checked"); });
+					data.modal.btns.push(a);
+				}
+			});
+
+			console.log(data);
 
 			data.btn = {
 				text: $("#mod-btn-text").val()
@@ -251,6 +301,16 @@ function Modal() {
 			templateSyntax: $("#syntax-highlighter"),
 			beforeDisplay: function() { $("#generateModBtn").val("Update Modal Code"); }
 		});
+	}
+
+	this.changeBtnType = function(t) {
+		var type = $(t).val();
+		var block = $(t).closest("li");
+
+		if(type == "btn")
+			block.find(".btn-type-a").slideUp("fast", function() { block.find(".btn-type-btn").slideDown("fast"); })
+		else
+			block.find(".btn-type-btn").slideUp("fast", function() { block.find(".btn-type-a").slideDown("fast"); })
 	}
 }
 
@@ -287,6 +347,11 @@ function showOutput(d) {
 	});
 }
 
+function myTest(a, b) {
+	alert(a);
+	alert(b);
+}
+
 /***
 **** INIT
 ***/
@@ -297,6 +362,14 @@ function handlebarsInit() {
 	    for(var i = 0; i < n; ++i)
 	        accum += block.fn(i);
 	    return accum;
+	});
+
+	//http://stackoverflow.com/questions/8853396/logical-operator-in-a-handlebars-js-if-conditional
+	Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+	  if(v1 === v2) {
+	    return options.fn(this);
+	  }
+	  return options.inverse(this);
 	});
 }
 

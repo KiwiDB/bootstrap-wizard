@@ -123,7 +123,7 @@
 <script id="accordion-form-li" type="text/x-handlebars-template">
 <li class='row acc-li-container'>
 	<div class='col-sm-8'><input type='text' class='form-control' /></div>
-	<div class='col-sm-4'><button class='btn btn-default btn-remove' onclick='accordion.removeLi(this); return false;'>-</button> <button class='btn btn-default btn-add' onclick='accordion.addLi(this); return false;'>+</button></div>
+	<div class='col-sm-4 btn-group' role="group" aria-label="Add or Remove Row"><button class='btn btn-default btn-remove' onclick='accordion.removeLi(this); return false;'>-</button> <button class='btn btn-default btn-add' onclick='accordion.addLi(this); return false;'>+</button></div>
 </li>
 </script>
 
@@ -184,8 +184,20 @@
 </button>
 
 <!-- Modal -->
+{{#if data.modal.fade}}
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+{{else}}
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+{{/if}}
+{{#ifCond data.modal.size 'lg'}}
+  <div class="modal-dialog modal-lg">
+{{/ifCond}}
+{{#ifCond data.modal.size 'sm'}}
+  <div class="modal-dialog modal-sm">
+{{/ifCond}}
+{{#ifCond data.modal.size 'no'}}
   <div class="modal-dialog">
+{{/ifCond}}
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -195,12 +207,72 @@
         {{{data.modal.body}}}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      	{{#data.modal.btns}}
+      	{{#ifCond btn-type 'btn'}}
+      	<button type="button" class="{{btn-class}}" onclick='{{btn-click}}'{{#if close}} data-dismiss="modal"{{/if}}>{{btn-text}}</button>
+      	{{/ifCond}}
+      	{{#ifCond btn-type 'a'}}
+      	<a href='{{btn-href}}' target='{{btn-target}}' class='{{btn-class}}'{{#if close}} data-dismiss="modal"{{/if}}>{{btn-text}}</a>
+      	{{/ifCond}}
+      	{{/data.modal.btns}}
       </div>
     </div>
   </div>
 </div>
+</script>
+
+<script id="modal-form-btn" type="text/x-handlebars-template">
+<li class='btn-row'>
+	<div class='form-inline row btn-type-row'>
+		<div class='form-group col-sm-6'>
+			<label for="btn-type-{{index}}">Type</label>
+    		<select id='btn-type-{{index}}' name='btn-type' class='form-control' onchange='modal.changeBtnType(this)'>
+    			<option value='btn'>Button</option>
+    			<option value='a'>A-tag</option>
+    		</select>
+    	</div>
+    	<div class='col-sm-6 btn-addremove' role="group" aria-label="Add or Remove Row">
+    		<button class='btn btn-default btn-remove' onclick='modal.removeBtn(this); return false;'>-</button> 
+    		<button class='btn btn-default btn-add' onclick='modal.addBtn(this); return false;'>+</button>
+    	</div>
+    </div>
+    <div class='row btn-fields btn-fields-all sep-top'>
+		<div class='form-group col-sm-4'>
+			<label for="btn-text-{{index}}">Button Text</label>
+			<input type='text' class='form-control' id='btn-text-{{index}}' name='btn-text' placeholder='Text' />
+		</div>
+		<div class='form-group col-sm-4'>
+			<label for="btn-class-{{index}}">Button Class</label>
+			<input type='text' class='form-control' id='btn-class-{{index}}' name='btn-class' placeholder='Class' />
+		</div>
+		<div class='form-group col-sm-4 checkbox'>
+			<label><input type="checkbox" id="btn-close-{{this}}" name='close' /> Close Modal when Clicked</label>
+		</div>
+	</div>
+    <div class='btn-fields btn-type-btn'>
+		<div class='row'>
+			<div class='form-group col-sm-12'>
+				<label for="btn-click-{{index}}">onClick Property</label>
+				<input type='text' class='form-control' id='btn-click-{{index}}' name='btn-click' placeholder='onClick' />
+			</div>
+		</div>
+	</div>
+	<div class='btn-fields btn-type-a' style='display:none'>
+		<div class='row'>
+			<div class='form-group col-sm-6'>
+				<label for="btn-href-{{index}}">HREF Property</label>
+				<input type='text' class='form-control' id='btn-href-{{index}}' name='btn-href' placeholder='HREF' />
+			</div>
+			<div class='form-group col-sm-6'>
+				<label for="btn-target-{{index}}">Target Window</label>
+				<select class='form-control' id='btn-target-{{index}}' name='btn-target'>
+					<option value='_self'>Same Window</option>
+					<option value='_blank'>New Window</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</li>
 </script>
 
 			   <?php endif; ?>

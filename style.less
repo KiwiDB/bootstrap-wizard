@@ -113,10 +113,89 @@ main {
 
 	//--- MODAL ---
 	body.modal-wiz & {
-		.content-container {
-			margin-top: 15px;
+		#modal-content-form {
+			> .row {
+				margin: 20px 0;
+/*
+				&:nth-child(even) {
+					background-color: #F5F5F5;
+				}
+*/
+				&:first-of-type {
+					margin-top: 30px;
+				}
+
+				&:last-of-type {
+					margin-bottom: 30px;
+				}
+
+				.content-container {
+					margin: 20px 0;
+				}
+
+				.config-container {
+					padding: 0;
+					margin-left: -15px;
+		    		margin-right: -15px;
+				}
+
+				//Button creation boxes
+				ul.add-btns {
+					padding-left: 15px;
+
+					li {
+						margin-bottom: 15px;
+
+						&:not(:last-of-type) {
+							padding: 10px;
+							border: 1px solid #ddd;
+							border-radius: 4px;
+						}
+
+						//Type/Add/Delete top row
+						.btn-type-row {
+							margin-bottom: 15px;
+
+							label {
+								margin-right: 20px;
+							}
+
+							.btn-addremove {
+								text-align: right;
+							}
+						}
+
+						.btn-fields {
+							padding-top: 15px;
+						}
+
+						.form-group {
+							margin-left: 0;
+							margin-right: 0;
+
+							label {
+								font-weight: normal;
+							}
+						}
+					}
+				}
+			}
+
+			.label-style {
+				text-align: right;
+				font-weight: 700;
+			}
 		}
 	}
+}
+
+//Footer
+footer {
+	background-color: @green;
+	color: white;
+	margin-top: 20px;
+	padding: 10px;
+	text-align: center;
 }
 
 
