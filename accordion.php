@@ -14,7 +14,12 @@
 	<?php bsRows(); ?>
 		<h2>Collapse (Accordion) Generator</h2>
 
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie tortor vitae lorem iaculis tincidunt. Nunc in aliquam quam. In hac habitasse platea dictumst. Donec imperdiet bibendum diam, vel interdum eros efficitur sit amet. Mauris libero tortor, tristique eu nulla in, fermentum viverra tellus.</p>
+		<blockquote>
+			<p>Flexible plugin that utilizes a handful of classes for easy toggle behavior.</p>
+			<footer><cite><a href='http://getbootstrap.com/javascript/#collapse' target='_blank'>getbootstrap.com</a></cite></footer>
+		</blockquote>
+
+		<p class='desc'>Use an accordion to hide and display content panels one at a time; opening one panel closes the others.</p>
 	<?php end_bsRows(); ?>
 </div>
 <!-- /Top Block -->

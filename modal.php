@@ -14,7 +14,13 @@
 	<?php bsRows(); ?>
 		<h2>Modal Generator</h2>
 
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie tortor vitae lorem iaculis tincidunt. Nunc in aliquam quam. In hac habitasse platea dictumst. Donec imperdiet bibendum diam, vel interdum eros efficitur sit amet. Mauris libero tortor, tristique eu nulla in, fermentum viverra tellus.</p>
+		<blockquote>
+			<p>Modals are streamlined, but flexible, dialog prompts with the minimum required functionality and smart defaults.</p>
+			<footer><cite><a href='http://getbootstrap.com/javascript/#modals' target='_blank'>getbootstrap.com</a></cite></footer>
+		</blockquote>
+		
+
+		<p>Use modals to display content in an on-page popup block.</p>
 	<?php end_bsRows(); ?>
 </div>
 <!-- /Top Block -->

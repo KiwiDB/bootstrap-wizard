@@ -150,7 +150,7 @@
 		{{/if}}
 			{{#if type}}
 			<div class="panel-body">
-				{{#if ../data.config.addP}}<p>{{/if}}{{body}}{{#if ../data.config.addP}}</p>{{/if}}
+				{{#if addP}}<p>{{/if}}{{body}}{{#if addP}}</p>{{/if}}
 			</div>
 			{{else}}
 			<ul class="list-group">

@@ -190,6 +190,7 @@ function Accordion() {
 			t.title = $(this).find("[name=title]").val();
 			t.open = $(this).find("[name=open]").prop("checked");
 			t.type = $(this).find("[name=type]").val() == "text";
+			t.addP = $("#addP").prop("checked");
 
 			if(t.type)
 				t.body = $(this).find("[name=body]").val();
@@ -209,19 +210,15 @@ function Accordion() {
 
 			t.index = data.fields.length+1;
 
-			console.log(t);
-
 			data.fields.push(t);
 		});
 
-		data.config = {
-			addP: $("#addP").prop("checked")
-		}
+		console.log(data);
 
 		showOutput({
 			data: data,
 			template: $("#accordion-html"),
-			templateSyntax: $("#accordion-syntax-highlighter"),
+			templateSyntax: $("#syntax-highlighter"),
 			beforeDisplay: function() { $("#generateAccordionBtn").val("Update Accordion Code"); }
 		});
 	}
@@ -321,6 +318,7 @@ function Modal() {
 **** GLOBAL
 ***/
 function showOutput(d) {
+
 	$("#output").slideUp("fast", function() {
 		//Grab the generated HTML
 		var source   = d.template.html();

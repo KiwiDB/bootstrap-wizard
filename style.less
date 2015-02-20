@@ -39,6 +39,35 @@ nav.navbar {
 		color: lighten(@green, 40%);
 	}
 
+	blockquote, blockquote p, blockquote a, blockquote footer, blockquote cite {
+		color: lighten(@green, 50%);
+	}
+
+	p.desc {
+		margin-top: 40px;
+	}
+
+	blockquote {
+		margin-top: 20px;
+
+		p {
+			font-size: 1em;
+		}
+
+		footer {
+			cite {
+				a {
+					text-decoration: underline;
+					color: mix(lighten(@green, 40%), blue, 85%);
+
+					&:hover {
+						color: mix(lighten(@green, 40%), blue, 90%);
+					}
+				}
+			}
+		}
+	}
+
 	.rounded-block {
 		width: @round-box-width;
 		text-align: center;
@@ -190,7 +219,7 @@ main {
 }
 
 //Footer
-footer {
+.container-fluid > footer {
 	background-color: @green;
 	color: white;
 	margin-top: 20px;
