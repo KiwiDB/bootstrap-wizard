@@ -179,15 +179,15 @@
 <!-- Modal Form -->
 <script id="modal-code" type="text/x-handlebars-template">
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+<button type="button" class="{{data.btn.class}}" data-toggle="modal" data-target="#{{data.modal.id}}">
   {{data.btn.text}}
 </button>
 
 <!-- Modal -->
 {{#if data.modal.fade}}
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="{{data.modal.id}}" tabindex="-1" role="dialog" aria-labelledby="{{data.modal.id}}Label" aria-hidden="true">
 {{else}}
-<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="{{data.modal.id}}" tabindex="-1" role="dialog" aria-labelledby="{{data.modal.id}}Label" aria-hidden="true">
 {{/if}}
 {{#ifCond data.modal.size 'lg'}}
   <div class="modal-dialog modal-lg">
@@ -201,7 +201,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">{{data.modal.title}}</h4>
+        <h4 class="modal-title" id="{{data.modal.id}}Label">{{data.modal.title}}</h4>
       </div>
       <div class="modal-body">
         {{{data.modal.body}}}

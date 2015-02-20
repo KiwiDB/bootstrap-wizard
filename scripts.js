@@ -263,6 +263,7 @@ function Modal() {
 
 		$("#output").slideUp("fast", function() {
 			data.modal = {
+				id: $("#mod-id").val(),
 				title: $("#mod-title").val(),
 				body: $("#mod-body").val(),
 				size: $("#mod-size").val(),
@@ -291,7 +292,8 @@ function Modal() {
 			console.log(data);
 
 			data.btn = {
-				text: $("#mod-btn-text").val()
+				text: $("#mod-trigger-btn-text").val(),
+				class: $("#mod-trigger-btn-class").val()
 			}
 		});
 

@@ -51,6 +51,12 @@
 					</div>
 					<div class='content-container'>
 						<div class='form-group'>
+							<label for="mod-id" class="col-sm-2 col-xs-2 control-label">ID</label>
+						    <div class="col-sm-8 col-xs-4">
+						      <input type="text" class="form-control" id="mod-id" placeholder="Title" name='id' />
+						    </div>
+						</div>
+						<div class='form-group'>
 							<label for="mod-title" class="col-sm-2 col-xs-2 control-label">Title</label>
 						    <div class="col-sm-8 col-xs-4">
 						      <input type="text" class="form-control" id="mod-title" placeholder="Title" name='title' />
@@ -87,9 +93,15 @@
 				<div class='col-sm-10'>
 					<div class='content-container'>
 						<div class='form-group'>
-							<label for="mod-btn-text" class="col-sm-2 col-xs-2 control-label">Text</label>
-						    <div class="col-sm-7 col-xs-4">
-						      <input type="text" class="form-control" id="mod-btn-text" placeholder="Text" name='btn-text' />
+							<label for="mod-trigger-btn-text" class="col-sm-2 col-xs-2 control-label">Text</label>
+						    <div class="col-sm-8 col-xs-4">
+						      <input type="text" class="form-control" id="mod-trigger-btn-text" placeholder="Text" name='btn-trigger-text' />
+						    </div>
+						</div>
+						<div class='form-group'>
+							<label for="mod-trigger-btn-class" class="col-sm-2 col-xs-2 control-label">Class</label>
+						    <div class="col-sm-8 col-xs-4">
+						      <input type="text" class="form-control" id="mod-trigger-btn-class" placeholder="Class" name='btn-trigger-text' />
 						    </div>
 						</div>
 					</div>
