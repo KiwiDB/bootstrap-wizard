@@ -59,7 +59,7 @@
 						<div class='form-group'>
 							<label for="mod-id" class="col-sm-2 col-xs-2 control-label">ID</label>
 						    <div class="col-sm-8 col-xs-4">
-						      <input type="text" class="form-control" id="mod-id" placeholder="Title" name='id' />
+						      <input type="text" class="form-control" id="mod-id" placeholder="ID" name='id' required />
 						    </div>
 						</div>
 						<div class='form-group'>
@@ -120,7 +120,7 @@
 
 		<div id="output" class="sep-top" style="display:none">
 			<!-- Code Output -->
-			<div id="code-container" class="brush: js"></div>
+			<div id="code-container"></div>
 
 			<!-- Preview -->
 			<div id="preview"></div>

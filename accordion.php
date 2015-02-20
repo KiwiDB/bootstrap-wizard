@@ -48,7 +48,7 @@
 
 		<div id="output" class="sep-top" style="display:none">
 			<!-- Code Output -->
-			<div id="code-container" class="brush: js"></div>
+			<div id="code-container"></div>
 
 			<!-- Preview -->
 			<div id="preview"></div>
